@@ -56,6 +56,10 @@ func BackupCreateCmd() cli.Command {
 				Name:  "label",
 				Usage: "specify labels for backup, in the format of `--label key1=value1 --label key2=value2`",
 			},
+			cli.StringFlag{
+				Name:  "backup-name",
+				Usage: "specify the backup name",
+			},
 		},
 		Action: func(c *cli.Context) {
 			if err := createBackup(c); err != nil {
@@ -276,12 +280,14 @@ func createBackup(c *cli.Context) error {
 		}
 	}
 
+	backupName := c.String("backup-name")
+
 	credential, err := util.GetBackupCredential(dest)
 	if err != nil {
 		return err
 	}
 
-	backup, err := task.CreateBackup(snapshot, dest, biName, biURL, labels, credential)
+	backup, err := task.CreateBackup(backupName, snapshot, dest, biName, biURL, labels, credential)
 	if err != nil {
 		return err
 	}
