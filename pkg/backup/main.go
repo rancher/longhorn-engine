@@ -106,12 +106,12 @@ func DoBackupCreate(backupName, volumeName, snapshotName, destURL, backingImageN
 	replicaBackup := replica.NewBackup(backingFile)
 
 	volume := &backupstore.Volume{
-		Name:             volumeName,
-		Size:             volumeInfo.Size,
-		Labels:           labelMap,
-		BackingImageName: backingImageName,
-		BackingImageURL:  backingImageURL,
-		CreatedTime:      util.Now(),
+		Name:                 volumeName,
+		Size:                 volumeInfo.Size,
+		Labels:               labelMap,
+		BackingImageName:     backingImageName,
+		BackingImageChecksum: backingImageURL,
+		CreatedTime:          util.Now(),
 	}
 	snapshot := &backupstore.Snapshot{
 		Name:        snapshotName,
