@@ -458,7 +458,7 @@ func (c *ReplicaClient) SyncFiles(fromAddress string, list []types.SyncFileInfo)
 	return nil
 }
 
-func (c *ReplicaClient) CreateBackup(snapshot, dest, volume, backingImageName, backingImageURL string, labels []string, credential map[string]string) (*ptypes.BackupCreateResponse, error) {
+func (c *ReplicaClient) CreateBackup(snapshot, dest, volume, backingImageName, backingImageChecksum string, labels []string, credential map[string]string) (*ptypes.BackupCreateResponse, error) {
 	conn, err := grpc.Dial(c.syncAgentServiceURL, grpc.WithInsecure())
 	if err != nil {
 		return nil, fmt.Errorf("cannot connect to SyncAgentService %v: %v", c.syncAgentServiceURL, err)
@@ -470,13 +470,13 @@ func (c *ReplicaClient) CreateBackup(snapshot, dest, volume, backingImageName, b
 	defer cancel()
 
 	resp, err := syncAgentServiceClient.BackupCreate(ctx, &ptypes.BackupCreateRequest{
-		SnapshotFileName: snapshot,
-		BackupTarget:     dest,
-		VolumeName:       volume,
-		BackingImageName: backingImageName,
-		BackingImageUrl:  backingImageURL,
-		Labels:           labels,
-		Credential:       credential,
+		SnapshotFileName:     snapshot,
+		BackupTarget:         dest,
+		VolumeName:           volume,
+		BackingImageName:     backingImageName,
+		BackingImageChecksum: backingImageChecksum,
+		Labels:               labels,
+		Credential:           credential,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create backup to %v for volume %v: %v", dest, volume, err)
