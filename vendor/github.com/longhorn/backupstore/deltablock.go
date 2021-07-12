@@ -14,11 +14,12 @@ import (
 )
 
 type DeltaBackupConfig struct {
-	Volume   *Volume
-	Snapshot *Snapshot
-	DestURL  string
-	DeltaOps DeltaBlockBackupOperations
-	Labels   map[string]string
+	BackupName string
+	Volume     *Volume
+	Snapshot   *Snapshot
+	DestURL    string
+	DeltaOps   DeltaBlockBackupOperations
+	Labels     map[string]string
 }
 
 type DeltaRestoreConfig struct {
@@ -206,8 +207,13 @@ func CreateDeltaBlockBackup(config *DeltaBackupConfig) (string, bool, error) {
 		LogFieldSnapshot:   snapshot.Name,
 	}).Debug("Creating backup")
 
+	backupName := config.BackupName
+	if backupName == "" {
+		backupName = util.GenerateName("backup")
+	}
+
 	deltaBackup := &Backup{
-		Name:         util.GenerateName("backup"),
+		Name:         backupName,
 		VolumeName:   volume.Name,
 		SnapshotName: snapshot.Name,
 		Blocks:       []BlockMapping{},
@@ -327,13 +333,13 @@ func performBackup(config *DeltaBackupConfig, delta *Mappings, deltaBackup *Back
 	volume.Size = config.Volume.Size
 	volume.Labels = config.Labels
 	volume.BackingImageName = config.Volume.BackingImageName
-	volume.BackingImageURL = config.Volume.BackingImageURL
+	volume.BackingImageChecksum = config.Volume.BackingImageChecksum
 
 	if err := saveVolume(volume, bsDriver); err != nil {
 		return progress, "", err
 	}
 
-	return PROGRESS_PERCENTAGE_BACKUP_TOTAL, encodeBackupURL(backup.Name, volume.Name, destURL), nil
+	return PROGRESS_PERCENTAGE_BACKUP_TOTAL, EncodeMetadataURL(backup.Name, volume.Name, destURL), nil
 }
 
 func mergeSnapshotMap(deltaBackup, lastBackup *Backup) *Backup {
@@ -396,7 +402,7 @@ func RestoreDeltaBlockBackup(config *DeltaRestoreConfig) error {
 		return err
 	}
 
-	srcBackupName, srcVolumeName, err := decodeBackupURL(backupURL)
+	srcBackupName, srcVolumeName, _, err := DecodeMetadataURL(backupURL)
 	if err != nil {
 		return err
 	}
@@ -537,7 +543,7 @@ func RestoreDeltaBlockBackupIncrementally(config *DeltaRestoreConfig) error {
 		return err
 	}
 
-	srcBackupName, srcVolumeName, err := decodeBackupURL(backupURL)
+	srcBackupName, srcVolumeName, _, err := DecodeMetadataURL(backupURL)
 	if err != nil {
 		return err
 	}
@@ -765,7 +771,7 @@ func DeleteDeltaBlockBackup(backupURL string) error {
 		return err
 	}
 
-	backupName, volumeName, err := decodeBackupURL(backupURL)
+	backupName, volumeName, _, err := DecodeMetadataURL(backupURL)
 	if err != nil {
 		return err
 	}
