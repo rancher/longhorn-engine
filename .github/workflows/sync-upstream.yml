@@ -16,7 +16,7 @@ jobs:
       uses: rancher/gh-issue-mgr/github-sync@main
       with:
         source_repo: "https://github.com/longhorn/longhorn-engine.git"
-        source_branch: "v*"
-        destination_branch: "v*"
+        source_branch: "v*.*.x"
+        destination_branch: "v*.*.x"
         sync_tags: "true"
         github_token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
