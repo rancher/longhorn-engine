@@ -13,7 +13,7 @@ jobs:
       with:
         persist-credentials: false
     - name: repo-sync
-      uses: rancher/gh-issue-mgr/github-sync@main
+      uses: rancher/gh-issue-mgr/github-sync@b70f0bdf12a03e5e3f33e4f92ccb6c89deb3ebd9
       with:
         source_repo: "https://github.com/longhorn/longhorn-engine.git"
         source_branch: "v*.*.x"
