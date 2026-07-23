@@ -1,0 +1,62 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>rancher/renovate-config#release"
+  ],
+  "baseBranchPatterns": [
+    "sync-upstream",
+    "release/v2.15",
+    "release/v2.14",
+    "release/v2.13",
+    "release/v2.12",
+    "release/v2.11"
+  ],
+  "prHourlyLimit": 2,
+  "packageRules": [
+    {
+      "description": "Apply Rancher 2.15 update constraints to branch release/v2.15. Adapt baseBranchPatterns and matchBaseBranches if this repository uses different release branch names.",
+      "matchBaseBranches": [
+        "release/v2.15"
+      ],
+      "extends": [
+        "github>rancher/renovate-config//rancher-2.15#release"
+      ]
+    },
+    {
+      "description": "Apply Rancher 2.14 update constraints to branch release/v2.14. Adapt baseBranchPatterns and matchBaseBranches if this repository uses different release branch names.",
+      "matchBaseBranches": [
+        "release/v2.14"
+      ],
+      "extends": [
+        "github>rancher/renovate-config//rancher-2.14#release"
+      ]
+    },
+    {
+      "description": "Apply Rancher 2.13 update constraints to branch release/v2.13. Adapt baseBranchPatterns and matchBaseBranches if this repository uses different release branch names.",
+      "matchBaseBranches": [
+        "release/v2.13"
+      ],
+      "extends": [
+        "github>rancher/renovate-config//rancher-2.13#release"
+      ]
+    },
+    {
+      "description": "Apply Rancher 2.12 update constraints to branch release/v2.12. Adapt baseBranchPatterns and matchBaseBranches if this repository uses different release branch names.",
+      "matchBaseBranches": [
+        "release/v2.12"
+      ],
+      "extends": [
+        "github>rancher/renovate-config//rancher-2.12#release"
+      ]
+    },
+    {
+      "description": "Apply Rancher 2.11 update constraints to branch release/v2.11. Adapt baseBranchPatterns and matchBaseBranches if this repository uses different release branch names.",
+      "matchBaseBranches": [
+        "release/v2.11"
+      ],
+      "extends": [
+        "github>rancher/renovate-config//rancher-2.11#release"
+      ]
+    }
+  ]
+}
