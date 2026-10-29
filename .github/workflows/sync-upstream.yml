@@ -18,5 +18,5 @@ jobs:
         source_repo: "https://github.com/longhorn/longhorn-engine.git"
         source_branch: "v*.*.x"
         destination_branch: "v*.*.x"
-        sync_tags: "true"
+        sync_tags: "false"
         github_token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
